@@ -26,7 +26,7 @@ function MakeRequest() {
     const fetchBlackoutDates = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/users/blackout-dates",
+          `${import.meta.env.VITE_API_BASE_URL}/api/users/blackout-dates`,
           { headers: { Authorization: `Bearer ${user.token}` } }
         );
         setBlackoutDates(res.data);
@@ -71,7 +71,7 @@ function MakeRequest() {
     setIsLoading(true);
     try {
       await axios.post(
-        "http://localhost:5000/api/requests",
+        `${import.meta.env.VITE_API_BASE_URL}/api/requests`,
         form,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import AppLogo from '../assets/Trinity-logo.jpg';
+import AppLogo from '../assets/trinity-logo.jpg';
 
 const MainLayout = () => {
   const { user, logout } = useAuth();

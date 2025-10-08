@@ -50,10 +50,10 @@ function AdminDashboard() {
     if (!user?.token) return;
     setLoading(true);
     try {
-      const statsPromise = axios.get("http://localhost:5000/api/admin/stats", {
+      const statsPromise = axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/admin/stats`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
-      const requestsPromise = axios.get("http://localhost:5000/api/admin/requests", {
+      const requestsPromise = axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/admin/requests`, {
         headers: { Authorization: `Bearer ${user.token}` },
         params: { status: filter === 'ALL' ? '' : filter, search },
       });
@@ -84,7 +84,7 @@ function AdminDashboard() {
   const handleDecision = async (id, action, comment = '') => {
     try {
       await axios.post(
-        `http://localhost:5000/api/admin/requests/${id}/decision`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/admin/requests/${id}/decision`,
         { action, comment },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -114,7 +114,6 @@ function AdminDashboard() {
     setShowDetailsModal(true);
   };
   
-  // ✨ NEW: Function to handle the CSV export
   const handleExport = () => {
     const params = new URLSearchParams({
       status: filter === 'ALL' ? '' : filter,
@@ -122,7 +121,7 @@ function AdminDashboard() {
       format: 'csv'
     }).toString();
     
-    const url = `http://localhost:5000/api/admin/requests?${params}`;
+    const url = `${import.meta.env.VITE_API_BASE_URL}/api/admin/requests?${params}`;
     
     fetch(url, {
         headers: { 'Authorization': `Bearer ${user.token}` }
@@ -164,7 +163,7 @@ function AdminDashboard() {
                 </li>
               ))}
             </ul>
-            {/* ✨ NEW: Wrapper for search and export */}
+            {/* for search and export */}
             <div className="d-flex gap-2">
               <input type="text" className="form-control" placeholder="Search..." value={search} onChange={e => setSearch(e.target.value)} />
               <button className="btn btn-outline-success" onClick={handleExport}>

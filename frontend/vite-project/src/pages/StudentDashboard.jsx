@@ -15,7 +15,7 @@ function StudentDashboard() {
     const fetchLatestRequest = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get("http://localhost:5000/api/requests/my", {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/requests/my`, {
           headers: { Authorization: `Bearer ${user.token}` },
           params: { limit: 1 }
         });

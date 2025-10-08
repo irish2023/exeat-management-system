@@ -22,7 +22,7 @@ function UserManagement() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/superadmin/users", {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/superadmin/users`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setUsers(res.data);
@@ -49,7 +49,7 @@ function UserManagement() {
     if (!selectedUser || !newRole) return;
     try {
       await axios.put(
-        `http://localhost:5000/api/superadmin/users/${selectedUser.id}/role`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/superadmin/users/${selectedUser.id}/role`,
         { role: newRole },
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -72,7 +72,7 @@ function UserManagement() {
     }
     try {
       await axios.post(
-        `http://localhost:5000/api/superadmin/users`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/superadmin/users`,
         newUserForm,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

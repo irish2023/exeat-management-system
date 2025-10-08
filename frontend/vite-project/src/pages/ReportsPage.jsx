@@ -32,7 +32,7 @@ function ReportsPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/admin/analytics", {
+        const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/admin/analytics`, {
           headers: { Authorization: `Bearer ${user.token}` },
         });
         

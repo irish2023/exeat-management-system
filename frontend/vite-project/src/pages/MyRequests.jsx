@@ -64,8 +64,8 @@ function MyRequests() {
     setIsLoading(true);
     setError('');
     try {
-      const reqPromise = axios.get("http://localhost:5000/api/requests/my", { headers: { Authorization: `Bearer ${user.token}` } });
-      const notifPromise = axios.get("http://localhost:5000/api/requests/notifications", { headers: { Authorization: `Bearer ${user.token}` } });
+      const reqPromise = axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/requests/my`, { headers: { Authorization: `Bearer ${user.token}` } });
+      const notifPromise = axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/requests/notifications`, { headers: { Authorization: `Bearer ${user.token}` } });
       const [reqRes, notifRes] = await Promise.all([reqPromise, notifPromise]);
       setRequests(reqRes.data);
       setNotifications(notifRes.data);
@@ -86,7 +86,7 @@ function MyRequests() {
   const handleCancelRequest = async (id) => {
     if (!window.confirm("Are you sure you want to cancel this request?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/requests/${id}/cancel`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/requests/${id}/cancel`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       fetchData(); // Refresh all data
@@ -97,7 +97,7 @@ function MyRequests() {
   
   const handleMarkAllRead = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/requests/notifications/read-all`, {}, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/requests/notifications/read-all`, {}, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       fetchData(); // Refresh all data

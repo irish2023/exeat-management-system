@@ -37,7 +37,7 @@ function ProfilePage() {
     setMessage('');
     try {
       await axios.put(
-        'http://localhost:5000/api/users/profile/password',
+        `${import.meta.env.VITE_API_BASE_URL}/api/users/profile/password`,
         passwords,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );

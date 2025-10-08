@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
-import AppLogo from '../assets/Trinity-logo.jpg';
+import AppLogo from '../assets/trinity-logo.jpg';
 //import AppLogo from '../assets/tu-logo.jpg';
 import { FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -40,7 +40,7 @@ function Register() {
     
     setIsLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", form);
+      const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, form);
       // Automatically log the user in after successful registration
       login(res.data);
       navigate("/dashboard");

@@ -18,7 +18,7 @@ function SystemSettings() {
   const fetchData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get("http://localhost:5000/api/superadmin/blackout-dates", {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/superadmin/blackout-dates`, {
         headers: { Authorization: `Bearer ${user.token}` },
       });
       setBlackoutDates(res.data);
@@ -49,7 +49,7 @@ function SystemSettings() {
     }
     try {
       await axios.post(
-        "http://localhost:5000/api/superadmin/blackout-dates",
+        `${import.meta.env.VITE_API_BASE_URL}/api/superadmin/blackout-dates`,
         form,
         { headers: { Authorization: `Bearer ${user.token}` } }
       );
@@ -64,7 +64,7 @@ function SystemSettings() {
     if (window.confirm("Are you sure you want to delete this blackout period?")) {
       try {
         await axios.delete(
-          `http://localhost:5000/api/superadmin/blackout-dates/${id}`,
+          `${import.meta.env.VITE_API_BASE_URL}/api/superadmin/blackout-dates/${id}`,
           { headers: { Authorization: `Bearer ${user.token}` } }
         );
         fetchData(); // Refresh list
