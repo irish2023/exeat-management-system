@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// -------------------
+// --- AUTH MODELS ---
+// -------------------
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  matricNo  String?
+  password  String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+
+  // Relations
+  requests             ExeatRequest[]
+  notifications        Notification[]
+  processedRequests    ExeatRequest[] @relation("AdminActions")
+  createdBlackoutDates BlackoutDate[]
+}
+
+// -------------------
+// --- CORE MODELS ---
+// -------------------
+
+model ExeatRequest {
+  id           Int       @id @default(autoincrement())
+  reason       String
+  destination  String?
+  type         ExeatType @default(OVERNIGHT)
+  startDate    DateTime
+  endDate      DateTime
+  status       Status    @default(PENDING)
+  adminComment String?
+  createdAt    DateTime  @default(now())
+
+  // Student who submitted the request
+  student   User @relation(fields: [studentId], references: [id])
+  studentId Int
+
+  // Admin who actioned the request (audit trail)
+  actionedBy   User?     @relation("AdminActions", fields: [actionedById], references: [id])
+  actionedById Int?
+  actionedAt   DateTime?
+}
+
+model Notification {
+  id        Int      @id @default(autoincrement())
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // User who receives the notification
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+}
+
+model BlackoutDate {
+  id          Int      @id @default(autoincrement())
+  reason      String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime @default(now())
+
+  // Super Admin who created the blackout date (audit trail)
+  createdBy   User @relation(fields: [createdById], references: [id])
+  createdById Int
+}
+
+
+// -------------------
+// --- ENUMS ---
+// -------------------
+
+enum Role {
+  STUDENT
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELED
+  AWAITING_INFO
+}
+
+enum ExeatType {
+  SINGLE_DAY
+  OVERNIGHT
+  WEEKEND
+  EMERGENCY
+}
